@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">爱动打印</string>
+    <!--network-->
+    <string name="connect_break">连接中断,请检查网络设置</string>
+    <string name="connect_timeout">连接超时,请检查网络设置</string>
+    <string name="loading">正在加载...</string>
+    <string name="app_take_ticket">APP取票</string>
+    <string name="weixin_take_ticket">微信取票</string>
+    <string name="wx_take_ticket">微信取票</string>
+    <string name="please_input_appoint_code">请输入预约码</string>
+    <string name="i_dong_fitness">爱动健身</string>
+    <string name="hint_appoint_code">提示：您可以将预约码紧贴下方扫码区进行扫码取票或输入预约码进行取票</string>
+    <string name="clear">清空</string>
+    <string name="sure">确定</string>
+    <string name="go_back_home_page">返回首页</string>
+    <string name="download_i_dong">扫描二维码下载爱动健身APP</string>
+    <string name="attention_i_dong_offical_accout">扫码关注爱动健身课程预约公众号</string>
+    <string name="waiting_for_printing">正在打印请稍等...</string>
+    <string name="please_download_app_and_attention">更多精彩请下载爱动APP，关注爱动微信</string>
+    <string name="error_configuration">Please configure your serial port first.</string>
+    <string name="error_security">You do not have read/write permission to the serial
+		port.</string>
+    <string name="error_unknown">The serial port can not be opened for an unknown
+		reason.</string>
+
+</resources>
