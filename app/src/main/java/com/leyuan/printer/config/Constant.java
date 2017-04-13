@@ -5,5 +5,5 @@ package com.leyuan.printer.config;
  */
 
 public class Constant {
-    public static final String PRINT_PORT ="/dev/ttys1";
+    public static final String PRINT_PORT ="/dev/ttyS1";
 }

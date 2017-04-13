@@ -14,7 +14,7 @@
  * limitations under the License. 
  */
 
-package com.leyuan.printer.serialport;
+package android_serialport_api;
 
 import android.util.Log;
 

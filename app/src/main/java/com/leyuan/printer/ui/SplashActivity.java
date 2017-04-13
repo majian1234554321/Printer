@@ -23,6 +23,8 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler.sendEmptyMessageDelayed(1, 2000);
+
+//        new PermissionUtil().exeShell("chmod 777 /dev/ttyS1");
     }
 
     @Override

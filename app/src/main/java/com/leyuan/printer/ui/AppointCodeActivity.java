@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leyuan.printer.R;
+import com.leyuan.printer.ui.print.Sending01010101Activity;
 
 import java.lang.reflect.Method;
 
@@ -130,7 +131,9 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
                 break;
 
             case R.id.bt_ok:
-                startActivity(new Intent(this,PrintActivity.class));
+                startActivity(new Intent(this,Sending01010101Activity.class));
+
+//                startActivity(new Intent(this,PrintActivity.class));
                 break;
             case R.id.bt_back:
                 finish();

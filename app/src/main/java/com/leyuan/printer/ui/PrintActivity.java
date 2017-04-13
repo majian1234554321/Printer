@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leyuan.printer.R;
-import com.leyuan.printer.serialport.SerialPort;
 import com.leyuan.printer.utils.BytesUtil;
 import com.leyuan.printer.utils.QRCode;
 import com.leyuan.printer.utils.ToastGlobal;
@@ -16,6 +15,8 @@ import com.leyuan.printer.utils.ToastGlobal;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
+
+import android_serialport_api.SerialPort;
 
 /**
  * Created by user on 2017/4/12.
@@ -48,13 +49,9 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
         try {
             mPrintPort = App.getInstance().getPrintPort();
             mOutputStream = mPrintPort.getOutputStream();
-            byte[] text = BytesUtil.hexStringToBytes("dayintest");
-            try {
-                mOutputStream.write(text);
-                mOutputStream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            byte[] text = BytesUtil.hexStringToBytes("test test");
+            mOutputStream.write(text);
+            mOutputStream.flush();
 
         } catch (SecurityException e) {
             e.printStackTrace();
