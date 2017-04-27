@@ -5,22 +5,18 @@ package com.leyuan.printer.config;
  * Created by user on 2015/5/20
  */
 public class UrlConfig {
-    public static final boolean debug = true;
+    public static final boolean debug = false;
 
-    private static String urlHtml;
     private static String urlHost;
 
     static {
         if (debug) {
-            urlHtml = "http://app.51aidong.com/";
-            urlHost = "http://app.51aidong.com/";
+            urlHost = "http://m1.aidong.me/aidong10/";
         } else {
-            urlHtml = "http://app.51aidong.com/";
-            urlHost = "http://app.51aidong.com/";
+            urlHost = "http://m.aidong.me/aidong11/";
         }
     }
 
     public static final String BASE_URL = urlHost;
-    static final String BASE_URL_HTML = urlHtml;
 }
 

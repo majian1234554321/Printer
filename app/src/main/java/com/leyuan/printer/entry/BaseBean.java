@@ -3,7 +3,7 @@ package com.leyuan.printer.entry;
 
 public class BaseBean<T> {
 
-    private int status;
+    private int code;
     private String message;
     private T data;
 
@@ -16,11 +16,11 @@ public class BaseBean<T> {
     }
 
     public int getStatus() {
-        return status;
+        return code;
     }
 
     public void setStatus(int status) {
-        this.status = status;
+        this.code = status;
     }
 
     public T getData() {
@@ -34,7 +34,7 @@ public class BaseBean<T> {
     @Override
     public String toString() {
         return "BaseBean{" +
-                "status=" + status +
+                "status=" + code +
                 ", message='" + message + '\'' +
                 ", data=" + data +
                 '}';

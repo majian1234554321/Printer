@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">爱动打印</string>
+    <string name="app_name">爱动取票</string>
     <!--network-->
     <string name="connect_break">连接中断,请检查网络设置</string>
     <string name="connect_timeout">连接超时,请检查网络设置</string>
@@ -14,7 +14,7 @@
     <string name="sure">确定</string>
     <string name="go_back_home_page">返回首页</string>
     <string name="download_i_dong">扫描二维码下载爱动健身APP</string>
-    <string name="attention_i_dong_offical_accout">扫码关注爱动健身课程预约公众号</string>
+    <string name="attention_i_dong_offical_accout">扫码关注爱动健身获取更多健身资讯</string>
     <string name="waiting_for_printing">正在打印请稍等...</string>
     <string name="please_download_app_and_attention">更多精彩请下载爱动APP，关注爱动微信</string>
     <string name="error_configuration">Please configure your serial port first.</string>
@@ -22,5 +22,8 @@
 		port.</string>
     <string name="error_unknown">The serial port can not be opened for an unknown
 		reason.</string>
+    <string name="checking">正在验证...</string>
+    <string name="print_error_contact_worker">打印机故障，请联系工作人员</string>
+    <string name="please_distance_phone_scan_port">注：请将手机远离扫描口5到10厘米</string>
 
 </resources>

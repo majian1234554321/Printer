@@ -1,6 +1,5 @@
 package com.leyuan.printer.ui;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -15,13 +14,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.leyuan.printer.R;
 import com.leyuan.printer.adapter.AdapterViewpager;
+import com.leyuan.printer.config.Constant;
 import com.leyuan.printer.utils.QRCode;
+import com.leyuan.printer.utils.WindowDisplayUtils;
 
 import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final int PAGE_CAROUSEL = 0;
-    private static final int DELAYED_MILLIS = 3000;
+    private static final int DELAYED_MILLIS = 5 * 1000;
     private static final int QRIMAGE_SIZE = 108;
     private static final int QRLOGO_SIZE = 26;
 
@@ -36,7 +37,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView txtQrCodeWx;
     private ImageView imgQrCodeWx;
 
-    private int[] imgs = new int[]{R.drawable.page_one, R.drawable.page_two};
+    private int[] imgs = new int[]{R.drawable.page_one, R.drawable.page_two, R.drawable.page_three, R.drawable.page_four};
     private ArrayList<View> views = new ArrayList<>();
 
     @Override
@@ -44,11 +45,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        initViewPager();
-        initQRImage();
+        if (Constant.BANNERS != null && !Constant.BANNERS.isEmpty()) {
+            initViewPager(Constant.BANNERS);
+        } else {
+            initViewPager();
+        }
+//        ToastGlobal.showLongCenter("无效的核销码");
+//        App.getInstance().getChannel();
+//        initQRImage();
     }
 
     private void initView() {
+
         viewpager = (ViewPager) findViewById(R.id.viewpager);
         imgBg = (ImageView) findViewById(R.id.img_bg);
         layoutAppTicket = (LinearLayout) findViewById(R.id.layout_app_ticket);
@@ -65,6 +73,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initViewPager() {
+        views.clear();
         for (int i = 0; i < imgs.length; i++) {
             ImageView img = new ImageView(this);
             img.setLayoutParams(new ViewPager.LayoutParams());
@@ -75,8 +84,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         AdapterViewpager adapterViewpager = new AdapterViewpager(views);
         viewpager.setAdapter(adapterViewpager);
-        if (views.size() > 1)
+        if (views.size() > 1) {
+            handler.removeCallbacksAndMessages(null);
             handler.sendEmptyMessageDelayed(PAGE_CAROUSEL, DELAYED_MILLIS);
+        }
+
+    }
+
+    private void initViewPager(ArrayList<String> banners) {
+        views.clear();
+
+        for (String banner : banners) {
+            ImageView img = new ImageView(this);
+            img.setLayoutParams(new ViewPager.LayoutParams());
+            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            Glide.with(this).load(banner).into(img);
+            views.add(img);
+        }
+
+        AdapterViewpager adapterViewpager = new AdapterViewpager(views);
+        viewpager.setAdapter(adapterViewpager);
+        if (views.size() > 1) {
+            handler.removeCallbacksAndMessages(null);
+            handler.sendEmptyMessageDelayed(PAGE_CAROUSEL, DELAYED_MILLIS);
+        }
     }
 
     private Handler handler = new Handler() {
@@ -97,19 +128,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     };
 
     private void initQRImage() {
-        Bitmap logo = BitmapFactory.decodeResource(getResources(),R.drawable.logo_i_dong);
-        imgQrCodeApp.setImageBitmap(QRCode.createQRCodeWithLogo("sdkjklasjdflk",QRIMAGE_SIZE,logo));
-        imgQrCodeWx.setImageBitmap(QRCode.createQRCodeWithLogo("http:www.baidu.com/map?a=11",QRIMAGE_SIZE,logo));
+        Bitmap logo = BitmapFactory.decodeResource(getResources(), R.drawable.logo_i_dong);
+        imgQrCodeApp.setImageBitmap(QRCode.createQRCodeWithLogo("sdkjklasjdflk", QRIMAGE_SIZE, logo));
+        imgQrCodeWx.setImageBitmap(QRCode.createQRCodeWithLogo("http:www.baidu.com/map?a=11", QRIMAGE_SIZE, logo));
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_app_ticket:
-                startActivity(new Intent(this, AppointCodeActivity.class));
+                AppointCodeActivity.start(this, Constant.APP_TICKET);
                 break;
             case R.id.layout_wx_ticket:
-                startActivity(new Intent(this, AppointCodeActivity.class));
+                AppointCodeActivity.start(this, Constant.WX_TICKET);
                 break;
         }
     }
@@ -118,5 +149,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WindowDisplayUtils.hideNavigationBar(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        App.getInstance().exitApp();
     }
 }

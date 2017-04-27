@@ -2,12 +2,19 @@ package com.leyuan.printer.ui;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 
+import com.facebook.stetho.Stetho;
 import com.leyuan.printer.config.Constant;
+import com.leyuan.printer.utils.ForegroundCallbacks;
+import com.leyuan.printer.utils.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.util.LinkedList;
+import java.util.List;
 
 import android_serialport_api.SerialPort;
 import android_serialport_api.SerialPortFinder;
@@ -27,7 +34,11 @@ public class App extends Application {
 
     public SerialPortFinder mSerialPortFinder = new SerialPortFinder();
     private SerialPort mPrintPort = null;
-//    private SerialPort mSerialPort = null;
+    private SerialPort mScanPort = null;
+    public boolean isForeground;
+    private static String channel;
+
+    public final static List<BaseActivity> mActivities = new LinkedList<>();
 
     @Override
     public void onCreate() {
@@ -35,26 +46,81 @@ public class App extends Application {
         mInstance = this;
         context = getApplicationContext();
 //        Stetho.initializeWithDefaults(this);
+
+        ForegroundCallbacks foregroundCallbacks = ForegroundCallbacks.init(this);
+        foregroundCallbacks.addListener(foregroundListener);
+        Stetho.initializeWithDefaults(this);
+
+
+    }
+
+    public String getChannel() {
+        if (channel == null) {
+            try {
+                ApplicationInfo appInfo = getPackageManager().getApplicationInfo(getPackageName(),
+                        PackageManager.GET_META_DATA);
+                channel = appInfo.metaData.getString("UMENG_CHANNEL");
+                // Tag﹕ app key : AIzaSyBhBFOgVQclaa8p1JJeqaZHiCo2nfiyBBo
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            Logger.i("UMENG_CHANNEL = " + channel);
+        }
+        return channel;
     }
 
     public static App getInstance() {
         return mInstance;
     }
 
-    public SerialPort getPrintPort() throws SecurityException, IOException, InvalidParameterException{
-        if(mPrintPort == null){
+    public SerialPort getPrintPort() throws SecurityException, IOException, InvalidParameterException {
+        if (mPrintPort == null) {
             mPrintPort = new SerialPort(new File(Constant.PRINT_PORT), 115200, 0);
         }
         return mPrintPort;
     }
 
-    public void closePrintPort(){
-        if(mPrintPort != null){
+    public void closePrintPort() {
+        if (mPrintPort != null) {
             mPrintPort.close();
             mPrintPort = null;
         }
     }
 
+    public SerialPort getScanPort() throws SecurityException, IOException, InvalidParameterException {
+        if (mScanPort == null) {
+            mScanPort = new SerialPort(new File(Constant.SCAN_PORT), Constant.SCAN_RATE, 0);
+        }
+        return mScanPort;
+    }
 
+    public void closeScanPort() {
+        if (mScanPort != null) {
+            mScanPort.close();
+            mScanPort = null;
+        }
+    }
 
+    private ForegroundCallbacks.Listener foregroundListener = new ForegroundCallbacks.Listener() {
+        @Override
+        public void onBecameForeground() {
+            isForeground = true;
+        }
+
+        @Override
+        public void onBecameBackground() {
+            isForeground = false;
+        }
+    };
+
+    public void exitApp() {
+        List<BaseActivity> copy;
+        synchronized (mActivities) {
+            copy = new LinkedList<>(mActivities);
+        }
+        for (BaseActivity activity : copy) {
+            activity.finish();
+        }
+    }
 }

@@ -34,7 +34,7 @@ import java.security.InvalidParameterException;
 import android_serialport_api.SerialPort;
 
 
-public abstract class SerialPortActivity extends BaseActivity {
+public abstract class ScanPortActivity extends BaseActivity {
 
     protected SerialPort mSerialPort;
     protected OutputStream mOutputStream;
@@ -69,7 +69,7 @@ public abstract class SerialPortActivity extends BaseActivity {
         b.setMessage(resourceId);
         b.setPositiveButton("OK", new OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                SerialPortActivity.this.finish();
+                ScanPortActivity.this.finish();
             }
         });
         b.show();
@@ -79,7 +79,7 @@ public abstract class SerialPortActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            mSerialPort = App.getInstance().getPrintPort();
+            mSerialPort = App.getInstance().getScanPort();
             mOutputStream = mSerialPort.getOutputStream();
             mInputStream = mSerialPort.getInputStream();
 
@@ -103,7 +103,7 @@ public abstract class SerialPortActivity extends BaseActivity {
     protected void onDestroy() {
         if (mReadThread != null)
             mReadThread.interrupt();
-        App.getInstance().closePrintPort();
+        App.getInstance().closeScanPort();
         mSerialPort = null;
         super.onDestroy();
     }
