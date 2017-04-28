@@ -316,6 +316,7 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
         isCheckintAppointCode = true;
         layout_checking.setVisibility(View.VISIBLE);
         presenter.getPrintInfo(code, ticketType);
+//        ToastGlobal.showShortConsecutive("startCheck  isCheck ：" + isCheckintAppointCode);
 
         Logger.i("startCheck  isCheckintAppointCode = " + isCheckintAppointCode);
     }
@@ -324,6 +325,7 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
     public void onGetPrintInfo(PrintResult printResult) {
         layout_checking.setVisibility(View.GONE);
         isCheckintAppointCode = false;
+//        ToastGlobal.showShortConsecutive("onGet  isCheck ：" + isCheckintAppointCode);
         Logger.i("onGetPrintI  isCheckintAppointCode = " + isCheckintAppointCode);
 
 //        ArrayList<PrintItem> items = new ArrayList<>();
@@ -421,6 +423,9 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
 //    }
 
     private void onDataReceived(final byte[] buf, final int size) {
+//        ToastGlobal.showShortConsecutive("onDataReceived  isCheck ：" + isCheckintAppointCode);
+        if (isCheckintAppointCode) return;
+
         byte b = buf[0];
         if (b >= 20 && b <= 126) {
 

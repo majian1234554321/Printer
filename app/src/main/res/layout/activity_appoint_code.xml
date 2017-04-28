@@ -102,8 +102,8 @@
                 <ImageButton
                     android:id="@+id/bt_delete"
                     style="@style/KeyBoardStyle"
-                    android:layout_marginLeft="28dp"
 
+                    android:layout_marginLeft="28dp"
                     android:src="@drawable/code_delete" />
 
             </LinearLayout>

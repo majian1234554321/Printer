@@ -8,7 +8,6 @@ import com.leyuan.printer.http.subscriber.BaseSubscriber;
 import com.leyuan.printer.mvp.model.PrinterModel;
 import com.leyuan.printer.mvp.view.BannerViewListener;
 import com.leyuan.printer.mvp.view.PrintInfoListener;
-import com.leyuan.printer.utils.ToastGlobal;
 
 import java.util.ArrayList;
 
@@ -39,7 +38,7 @@ public class PrinterPresenter {
     }
 
     public void getPrintInfo(String code, String lessonType) {
-        model.getPrintInfo(code, lessonType, new Subscriber<PrintResult>() {
+        model.getPrintInfo(code, lessonType, new BaseSubscriber<PrintResult>(context) {
             @Override
             public void onCompleted() {
 
@@ -47,7 +46,8 @@ public class PrinterPresenter {
 
             @Override
             public void onError(Throwable e) {
-                ToastGlobal.showShort(e.getMessage());
+                super.onError(e);
+//                ToastGlobal.showShort(e.getMessage());
                 if (printInfoListenerlistener != null)
                     printInfoListenerlistener.onGetPrintInfo(null);
             }
