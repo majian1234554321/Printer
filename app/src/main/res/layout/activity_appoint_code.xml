@@ -10,7 +10,8 @@
         android:background="@drawable/bg_appoint_code"
         android:orientation="vertical">
 
-        <include layout="@layout/layout_title" />
+        <include
+            layout="@layout/layout_title" />
 
         <TextView
             android:id="@+id/txt_hint"
@@ -22,7 +23,6 @@
             android:text="@string/hint_appoint_code"
             android:textColor="@color/lightWhite"
             android:textSize="22sp"
-
             />
 
         <ImageView
@@ -32,7 +32,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="32dp"
             android:src="@drawable/appoint_take_ticket"
-
 
             />
 
@@ -104,6 +103,7 @@
                     android:id="@+id/bt_delete"
                     style="@style/KeyBoardStyle"
                     android:layout_marginLeft="28dp"
+
                     android:src="@drawable/code_delete" />
 
             </LinearLayout>

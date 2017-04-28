@@ -30,7 +30,7 @@ android {
     }
 
     productFlavors {
-        ad001 {}
+        wer001 {}
         w002 {}
         w003 {}
         w004 {}

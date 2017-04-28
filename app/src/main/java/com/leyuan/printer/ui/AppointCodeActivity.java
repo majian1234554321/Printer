@@ -18,6 +18,7 @@ import com.leyuan.printer.R;
 import com.leyuan.printer.entry.PrintResult;
 import com.leyuan.printer.mvp.presenter.PrinterPresenter;
 import com.leyuan.printer.mvp.view.PrintInfoListener;
+import com.leyuan.printer.utils.Logger;
 import com.leyuan.printer.utils.PrintUtils;
 import com.leyuan.printer.utils.ScanUtils;
 import com.leyuan.printer.utils.ToastGlobal;
@@ -315,11 +316,15 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
         isCheckintAppointCode = true;
         layout_checking.setVisibility(View.VISIBLE);
         presenter.getPrintInfo(code, ticketType);
+
+        Logger.i("startCheck  isCheckintAppointCode = " + isCheckintAppointCode);
     }
 
     @Override
     public void onGetPrintInfo(PrintResult printResult) {
         layout_checking.setVisibility(View.GONE);
+        isCheckintAppointCode = false;
+        Logger.i("onGetPrintI  isCheckintAppointCode = " + isCheckintAppointCode);
 
 //        ArrayList<PrintItem> items = new ArrayList<>();
 //        for (int i = 0; i < 7; i++) {
@@ -331,7 +336,9 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
 //        finish();
 
 //release
+
         if (printResult == null || printResult.getLessonInfo() == null) {
+
             sendFinishMessage();
             ToastGlobal.showLongCenter("无效的核销码");
         } else {
@@ -339,7 +346,7 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
                     , printResult.getIsPrint(), ticketType, printResult.getCode());//printResult.getLessonType()
             finish();
         }
-        isCheckintAppointCode = false;
+
     }
 
     @Override
@@ -358,10 +365,13 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
         public void run() {
             super.run();
             while (!isInterrupted()) {
-                if (isCheckintAppointCode) return;
+                Logger.i("ReadThread isCheckintAppointCode = " + isCheckintAppointCode);
+
+//                if (isCheckintAppointCode) return;
                 int size;
                 try {
                     byte[] buffer = new byte[64];
+//                    handler.sendEmptyMessage(10);
                     if (mInputStream == null) return;
                     size = mInputStream.read(buffer);
                     if (size > 0) {
@@ -445,6 +455,9 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
                 case PRINT_ERROR:
                     layoutError.setVisibility(View.VISIBLE);
                     txtPrintError.setText("打印机故障 请联系工作人员");
+                    break;
+                case 10:
+                    ToastGlobal.showShortConsecutive("接收到数据");
                     break;
 
             }
