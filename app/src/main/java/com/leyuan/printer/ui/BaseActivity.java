@@ -38,11 +38,12 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         synchronized (mActivities) {
             mActivities.remove(this);
             Logger.w(" mActivities.remove(this) : ", getClass().getSimpleName());
         }
+        super.onDestroy();
+
     }
 
 

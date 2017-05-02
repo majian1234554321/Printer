@@ -1,7 +1,9 @@
 package com.leyuan.printer.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leyuan.printer.R;
+import com.leyuan.printer.config.Constant;
 import com.leyuan.printer.entry.PrintResult;
 import com.leyuan.printer.mvp.presenter.PrinterPresenter;
 import com.leyuan.printer.mvp.view.PrintInfoListener;
@@ -29,7 +32,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 
 import android_serialport_api.SerialPort;
 
@@ -40,6 +42,10 @@ import static com.leyuan.printer.utils.PrintUtils.PRINT_NO_PAPER;
  */
 public class AppointCodeActivity extends BaseActivity implements View.OnClickListener, PrintInfoListener {
 
+    private boolean isFirst = true;
+    private byte firstIndex;
+    private byte secondIndex;
+
 
     private static final int NULL_EVENT = 1;
     private static final int NULL_EVENT_INTERVAL = 30 * 1000;
@@ -47,6 +53,7 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
     private static final int READ_PRINTER = 3;
     private static final int PRINT_ERROR = 4;
     private static final int PRINT_IOEXCEPTION = 5;
+    private static final int RECEIVED_CHAR = 6;
 
     private TextView txtHint;
     private ImageView imgTag;
@@ -56,19 +63,85 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
     private StringBuffer buffer = new StringBuffer();
     private StringBuffer scanBuffer = new StringBuffer();
     private StringBuffer printBuffer = new StringBuffer();
-    private InputStream mInputStream;
-    private ReadThread mReadThread;
 
-    private ArrayList<Byte> arrayList = new ArrayList<>();
-    //    private CheckDialog checkDialog;
+//    private InputStream mInputStream;
+//    private ReadThread mReadThread;
+
     private PrinterPresenter presenter;
     private String ticketType;
     private boolean isCheckintAppointCode;
-    //    private OutputStream printOutputStream;
-//    private InputStream printInputStream;
-//    private PrintReadThread printReadThread;
     private RelativeLayout layoutError;
     private TextView txtPrintError;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case NULL_EVENT:
+                    finish();
+                    break;
+                case REVEIVED_SCAN_STRING:
+                    handler.removeMessages(NULL_EVENT);
+                    startCheckAppointCode(scanBuffer.toString());
+                    txtAppointCode.setText(scanBuffer.toString());
+                    scanBuffer.delete(0, scanBuffer.length());
+
+//                    txtAppointCode.setText(scanString);
+
+//                    ToastGlobal.showShort("收到结束标志");
+
+
+//                    txtAppointCode.setText(scanString);
+                    break;
+                case READ_PRINTER:
+                    txtAppointCode.setText(printBuffer.toString());
+                    break;
+                case PRINT_NO_PAPER:
+                    layoutError.setVisibility(View.VISIBLE);
+                    txtPrintError.setText("检测到打印机无纸 请联系工作人员");
+
+                    break;
+                case PRINT_ERROR:
+                    layoutError.setVisibility(View.VISIBLE);
+                    txtPrintError.setText("打印机故障 请联系工作人员");
+                    break;
+                case RECEIVED_CHAR:
+                    int size = msg.arg1;
+                    byte[] bytes = (byte[]) msg.obj;
+
+                    String temp = "";
+                    try {
+                        temp = new String(bytes, 0, size);
+                    } catch (UnsupportedOperationException e) {
+                        ToastGlobal.showLong(e.getMessage());
+                    }
+
+                    scanBuffer.append(temp);
+
+
+//                    scanString = scanString.concat(new String(bytes, 0, size));
+//                    ToastGlobal.showShort(scanString + " size = " + size);
+                    break;
+                case 10:
+                    ToastGlobal.showShortConsecutive("接收到数据");
+                    break;
+                case 11:
+                    ToastGlobal.showLong((String) msg.obj);
+                    break;
+                case 13:
+//                    StringBuffer buffer = new StringBuffer();
+//                    for (Byte b : byteArray) {
+//                        buffer.append(b).append(" ");
+//                    }
+//                    ToastGlobal.showShort(buffer.toString());
+
+                    break;
+
+            }
+        }
+    };
+    private ScanReceiver scanReceiver;
 
     public static void start(Context context, String ticketType) {
         Intent intent = new Intent(context, AppointCodeActivity.class);
@@ -81,12 +154,16 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
 
         ticketType = getIntent().getStringExtra("ticketType");
+
         setContentView(R.layout.activity_appoint_code);
+
         presenter = new PrinterPresenter(this);
         presenter.setPrintInfoListener(this);
         initView();
         initPrintPort();
         sendFinishMessage();
+
+        initScanPort();
     }
 
     private void initView() {
@@ -122,8 +199,6 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
             OutputStream printOutputStream = mPrintPort.getOutputStream();
             InputStream printInputStream = mPrintPort.getInputStream();
 
-//            printReadThread = new PrintReadThread();
-//            printReadThread.start();
 
             printOutputStream.write(PrintUtils.PRINT_STATE);
             byte[] buffer = new byte[64];
@@ -132,30 +207,17 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
                 if (buffer[0] == PrintUtils.PRINT_NORMAL) {
                     initScanPort();
 
-//                    printOutputStream.write(PrintUtils.PRINT_STATE_HEADER);
-//                    byte[] b2 = new byte[64];
-//                    int s2 = printInputStream.read(b2);
-//                    if (s2 > 0) {
-//                        ToastGlobal.showLong("n=4 code = " + b2[0]);
-//                        if (b2[0] == PrintUtils.PRINT_NO_PAPER) {
-//                            layoutError.setVisibility(View.VISIBLE);
-//                            txtPrintError.setText("检测到打印机无纸 请联系工作人员");
-//                        }
-//                    }
                 } else {
-//                    ToastGlobal.showLong(" n=1 code = " + buffer[0]);
                     layoutError.setVisibility(View.VISIBLE);
                     printOutputStream.write(PrintUtils.PRINT_STATE_HEADER);
                     byte[] b = new byte[64];
                     int s = printInputStream.read(b);
                     if (s > 0) {
-//                        ToastGlobal.showLong("n=4 code = " + b[0]);
                         if (b[0] == PrintUtils.MACHINE_NORMAL) {
                             printOutputStream.write(PrintUtils.PRINT_STATE_PAPER);
                             byte[] b2 = new byte[64];
                             int s2 = printInputStream.read(b2);
                             if (s2 > 0) {
-//                                ToastGlobal.showLong("n=4 code = " + b2[0]);
                                 if (b2[0] == PrintUtils.PRINT_NO_PAPER) {
                                     txtPrintError.setText("检测到打印机无纸 请联系工作人员");
                                 }
@@ -194,20 +256,24 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
 
 
     private void initScanPort() {
-        try {
-            SerialPort scanPort = App.getInstance().getScanPort();
-            mInputStream = scanPort.getInputStream();
-            mReadThread = new ReadThread();
-            mReadThread.start();
-        } catch (SecurityException e) {
-            ToastGlobal.showShort(R.string.error_security);
-        } catch (IOException e) {
-            ToastGlobal.showShort(R.string.error_unknown);
-        } catch (InvalidParameterException e) {
-            ToastGlobal.showShort(R.string.error_configuration);
-        } catch (Exception e) {
-            ToastGlobal.showShort(e.getMessage());
-        }
+        scanReceiver = new ScanReceiver();
+        registerReceiver(scanReceiver, new IntentFilter(Constant.RECEIVER_SCAN));
+
+//        try {
+//            SerialPort scanPort =  App.getInstance().getScanPort();
+//
+//            mInputStream = scanPort.getInputStream();
+//            mReadThread = new ReadThread();
+//            mReadThread.start();
+//        } catch (SecurityException e) {
+//            ToastGlobal.showShort(R.string.error_security);
+//        } catch (IOException e) {
+//            ToastGlobal.showShort(R.string.error_unknown);
+//        } catch (InvalidParameterException e) {
+//            ToastGlobal.showShort(R.string.error_configuration);
+//        } catch (Exception e) {
+//            ToastGlobal.showShort(e.getMessage());
+//        }
     }
 
 
@@ -361,184 +427,90 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
         handler.sendEmptyMessageDelayed(NULL_EVENT, NULL_EVENT_INTERVAL);
     }
 
+
     private class ReadThread extends Thread {
 
         @Override
         public void run() {
-            super.run();
-            while (!isInterrupted()) {
-                Logger.i("ReadThread isCheckintAppointCode = " + isCheckintAppointCode);
-
-//                if (isCheckintAppointCode) return;
-                int size;
-                try {
-                    byte[] buffer = new byte[64];
-//                    handler.sendEmptyMessage(10);
-                    if (mInputStream == null) return;
-                    size = mInputStream.read(buffer);
-                    if (size > 0) {
-                        onDataReceived(buffer, size);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-//                    ToastGlobal.showShort(e.getMessage());
-                    return;
-                }
-            }
-        }
-    }
-
-//    private class PrintReadThread extends Thread {
-//        @Override
-//        public void run() {
 //            super.run();
 //            while (!isInterrupted()) {
+//                Logger.i("ReadThread isCheckintAppointCode = " + isCheckintAppointCode);
+//
 //                int size;
 //                try {
 //                    byte[] buffer = new byte[64];
-//                    if (printInputStream == null) return;
-//                    size = printInputStream.read(buffer);
-//                    if (size > 0) {
-//                        if (buffer[0] == PrintUtils.PRINT_NORMAL) {
-//                            releasePrint();
-//                            initScanPort();
-//                        } else {
-//                            if (buffer[0] == PRINT_NO_PAPER) {
-//                                handler.sendEmptyMessage(PRINT_NO_PAPER);
-//                            } else {
-//                                handler.sendEmptyMessage(PRINT_ERROR);
-//                            }
-//                        }
-//                    }
+////                    if (mInputStream == null) return;
+////                    if(mInputStream.available() >4){
+////                    }
+////                    size = mInputStream.read(buffer);
+////                    if (size > 0) {
+////                        onDataReceived(buffer, size);
+////                    }
 //                } catch (IOException e) {
 //                    e.printStackTrace();
-//                    Message msg = Message.obtain();
-//                    msg.what = PRINT_IOEXCEPTION;
-//                    msg.obj = e.getMessage();
-//                    handler.sendMessage(msg);
 //                    return;
 //                }
 //            }
-//        }
-//    }
+        }
+    }
+
+//    private List<Byte> byteArray = new Vector<>();
 
     private void onDataReceived(final byte[] buf, final int size) {
-//        ToastGlobal.showShortConsecutive("onDataReceived  isCheck ：" + isCheckintAppointCode);
         if (isCheckintAppointCode) return;
 
-        byte b = buf[0];
-        if (b >= 20 && b <= 126) {
 
-            scanBuffer.append(new String(buf, 0, size));
+        byte b = buf[0];
+        if (b > 32 && b <= 126) {
+
+//            for (int i = 0; i < size; i++) {
+//                byteArray.add(buf[i]);
+//            }
+
+
+//        if (b != ScanUtils.END_TAG && b != ScanUtils.END_TAG_SECOND) {
+
+            Message receiverCharMessage = Message.obtain();
+            receiverCharMessage.what = RECEIVED_CHAR;
+            receiverCharMessage.obj = buf;
+            receiverCharMessage.arg1 = size;
+            handler.sendMessage(receiverCharMessage);
+
+//            scanString.concat(new String(buf, 0, size, UTF8_CHARSET));
+
+
+//            scanBuffer.append(new String(buf, 0, size));
+
+
+//            handler.sendEmptyMessage(13);
+
         } else if (b == ScanUtils.END_TAG) {
             handler.sendEmptyMessage(REVEIVED_SCAN_STRING);
         }
+        //        Message message = Message.obtain();
+//        message.obj = b + "";
+//        message.what = 11;
+//
+//        handler.sendMessage(message);
+
 
     }
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case NULL_EVENT:
-                    finish();
-                    break;
-                case REVEIVED_SCAN_STRING:
-                    handler.removeMessages(NULL_EVENT);
-                    startCheckAppointCode(scanBuffer.toString());
-                    scanBuffer.delete(0, scanBuffer.length());
-                    break;
-                case READ_PRINTER:
-                    txtAppointCode.setText(printBuffer.toString());
-                    break;
-                case PRINT_NO_PAPER:
-                    layoutError.setVisibility(View.VISIBLE);
-                    txtPrintError.setText("检测到打印机无纸 请联系工作人员");
-
-                    break;
-                case PRINT_ERROR:
-                    layoutError.setVisibility(View.VISIBLE);
-                    txtPrintError.setText("打印机故障 请联系工作人员");
-                    break;
-                case 10:
-                    ToastGlobal.showShortConsecutive("接收到数据");
-                    break;
-
-            }
-        }
-    };
-
-
-//    public void releasePrint() {
-//
-//        if (printReadThread != null) {
-//            printReadThread.interrupt();
-//            printReadThread = null;
-//        }
-//        App.getInstance().closePrintPort();
-//        if (printOutputStream != null) {
-//            try {
-//                printOutputStream.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } finally {
-//                printOutputStream = null;
-//            }
-//            printOutputStream = null;
-//        }
-//
-//        if (printInputStream != null) {
-//            try {
-//                printInputStream.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } finally {
-//                printInputStream = null;
-//            }
-//            printInputStream = null;
-//        }
-//
-//    }
 
     public void releaseScanPort() {
-        if (mReadThread != null)
-            mReadThread.interrupt();
-        App.getInstance().closeScanPort();
-        if (mInputStream != null) {
-            try {
-                mInputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                mInputStream = null;
-            }
-            mInputStream = null;
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        handler.removeCallbacksAndMessages(null);
-//        releasePrint();
-        releaseScanPort();
-        super.onDestroy();
-
-    }
-
-    private static String byte2hex(byte[] buffer) {
-        String h = "";
-
-        for (int i = 0; i < buffer.length; i++) {
-            String temp = Integer.toHexString(buffer[i] & 0xFF);
-            if (temp.length() == 1) {
-                temp = "0" + temp;
-            }
-            h = h + " " + temp;
-        }
-
-        return h + " ";
-
+//        if (mReadThread != null)
+//            mReadThread.interrupt();
+//        App.getInstance().closeScanPort();
+//        if (mInputStream != null) {
+//            try {
+////                mInputStream.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } finally {
+//                mInputStream = null;
+//            }
+//            mInputStream = null;
+//        }
     }
 
 
@@ -546,5 +518,48 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
     protected void onResume() {
         super.onResume();
         WindowDisplayUtils.hideNavigationBar(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        handler.removeCallbacksAndMessages(null);
+//        releasePrint();
+        releaseScanPort();
+        if (scanReceiver != null) {
+            unregisterReceiver(scanReceiver);
+        }
+        super.onDestroy();
+
+    }
+
+
+    class ScanReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String buffer = intent.getStringExtra("scanBuffer");
+//            ToastGlobal.showShort("receiver broadcast");
+
+            if (buffer != null && !isCheckintAppointCode) {
+                handler.removeMessages(NULL_EVENT);
+                startCheckAppointCode(buffer);
+                txtAppointCode.setText(buffer);
+//                ToastGlobal.showShort("received : " + buffer);
+
+//                scanBuffer.delete(0, scanBuffer.length());
+            }
+
+//            if (end) {
+//                handler.removeMessages(NULL_EVENT);
+//                startCheckAppointCode(scanBuffer.toString());
+//                txtAppointCode.setText(scanBuffer.toString());
+//                scanBuffer.delete(0, scanBuffer.length());
+//
+//            } else if (buffer != null) {
+//                scanBuffer.append(buffer);
+//                ToastGlobal.showShortConsecutive(scanBuffer.toString());
+//            }
+        }
     }
 }

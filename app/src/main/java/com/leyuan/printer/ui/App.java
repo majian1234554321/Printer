@@ -123,4 +123,5 @@ public class App extends Application {
             activity.finish();
         }
     }
+
 }
