@@ -27,6 +27,7 @@ public class ForegroundRunService extends Service {
     private static final int BROADCAST = 2;
     private static final int APPEND = 3;
     private static final int END_TAG = 4;
+    private static final int ERROR_SCAN = 5;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -35,15 +36,15 @@ public class ForegroundRunService extends Service {
                 handler.removeMessages(CHECK_RUNNING_STATE);
                 handler.sendEmptyMessageDelayed(CHECK_RUNNING_STATE, INTERVAL);
                 if (!App.getInstance().isForeground) {
-//                    if (App.getInstance().mActivities != null) {
                     App.getInstance().exitApp();
-//                    }
 
                     Intent intent = new Intent(ForegroundRunService.this, SplashActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                 }
 
+            } else if (msg.what == ERROR_SCAN) {
+                ToastGlobal.showLongCenter("扫描功能启动失败 请联系工作人员");
             } else if (msg.what == BROADCAST) {
                 ToastGlobal.showShort("sendBroadcast");
             } else if (msg.what == END_TAG) {
@@ -80,11 +81,16 @@ public class ForegroundRunService extends Service {
                             if (size > 0) {
                                 byte b = buffer[0];
                                 if (b > 32 && b <= 126) {
-
+                                    if (scanBuffer == null) {
+                                        scanBuffer = new StringBuffer();
+                                    }
 //                                    handler.sendEmptyMessage(APPEND);
                                     scanBuffer.append(new String(buffer, 0, size));
 
                                 } else if (b == ScanUtils.END_TAG) {
+                                    if (scanBuffer == null) {
+                                        scanBuffer = new StringBuffer();
+                                    }
 //                                    handler.sendEmptyMessage(END_TAG);
                                     Intent intent = new Intent(Constant.RECEIVER_SCAN);
                                     intent.putExtra("scanBuffer", scanBuffer.toString());
@@ -103,6 +109,8 @@ public class ForegroundRunService extends Service {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    handler.sendEmptyMessage(ERROR_SCAN);
+
                 }
 
 

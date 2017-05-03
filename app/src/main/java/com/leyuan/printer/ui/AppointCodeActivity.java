@@ -544,7 +544,7 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
             if (buffer != null && !isCheckintAppointCode) {
                 handler.removeMessages(NULL_EVENT);
                 startCheckAppointCode(buffer);
-                txtAppointCode.setText(buffer);
+//                txtAppointCode.setText(buffer);
 //                ToastGlobal.showShort("received : " + buffer);
 
 //                scanBuffer.delete(0, scanBuffer.length());
