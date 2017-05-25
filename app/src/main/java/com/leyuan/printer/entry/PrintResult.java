@@ -1,5 +1,7 @@
 package com.leyuan.printer.entry;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -7,9 +9,13 @@ import java.util.ArrayList;
  */
 public class PrintResult {
 
+    @SerializedName("lessonType")
     int lessonType; //课程类型(1-APP 0-微信),
+    @SerializedName("code")
     String code;  //"验证码"
+    @SerializedName("isPrint")
     int isPrint;//是否已经打印,(0-未打印 1-已打印过)
+    @SerializedName("data")
     LessonInfo lessonInfo;
 
     public int getLessonType() {

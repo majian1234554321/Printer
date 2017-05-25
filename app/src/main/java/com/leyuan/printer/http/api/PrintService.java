@@ -17,12 +17,12 @@ import rx.Observable;
 
 public interface PrintService {
 
-    @GET("courses/{code}.json")
+    @GET("campaigns/{code}.json")
     Observable<BaseBean<PrintResult>> getPrintInfo(@Path("code") String code,
                                                    @Query("machineId") String machineId,
                                                    @Query("lessonType") String lessonType);
 
-    @POST("courses/{code}.json")
+    @POST("campaigns/{code}.json")
     Observable<BaseBean<PrintResult>> printSuccess(@Path("code") String code,
                                                    @Query("machineId") String machineId,
                                                    @Query("lessonType") String lessonType);

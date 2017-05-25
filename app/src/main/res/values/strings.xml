@@ -25,5 +25,6 @@
     <string name="checking">正在验证...</string>
     <string name="print_error_contact_worker">打印机故障，请联系工作人员</string>
     <string name="please_distance_phone_scan_port">注：请将手机远离扫描口5到10厘米</string>
+    <string name="fitness_take_ticket">2017爱动城市健身节</string>
 
 </resources>

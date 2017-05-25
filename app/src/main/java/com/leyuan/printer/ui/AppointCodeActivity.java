@@ -381,9 +381,9 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
     private void startCheckAppointCode(String code) {
         isCheckintAppointCode = true;
         layout_checking.setVisibility(View.VISIBLE);
+//        code = "101434133440";
         presenter.getPrintInfo(code, ticketType);
 //        ToastGlobal.showShortConsecutive("startCheck  isCheck ：" + isCheckintAppointCode);
-
         Logger.i("startCheck  isCheckintAppointCode = " + isCheckintAppointCode);
     }
 

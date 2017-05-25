@@ -30,8 +30,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ImageView imgBg;
     private LinearLayout layoutAppTicket;
     private ImageView imgApp;
-    private LinearLayout layoutWxTicket;
-    private ImageView imgWx;
+//    private LinearLayout layoutWxTicket;
+//    private ImageView imgWx;
     private TextView txtQrCodeApp;
     private ImageView imgQrCodeApp;
     private TextView txtQrCodeWx;
@@ -61,15 +61,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         imgBg = (ImageView) findViewById(R.id.img_bg);
         layoutAppTicket = (LinearLayout) findViewById(R.id.layout_app_ticket);
         imgApp = (ImageView) findViewById(R.id.img_app);
-        layoutWxTicket = (LinearLayout) findViewById(R.id.layout_wx_ticket);
-        imgWx = (ImageView) findViewById(R.id.img_wx);
+//        layoutWxTicket = (LinearLayout) findViewById(R.id.layout_wx_ticket);
+//        imgWx = (ImageView) findViewById(R.id.img_wx);
         txtQrCodeApp = (TextView) findViewById(R.id.txt_qr_code_app);
         imgQrCodeApp = (ImageView) findViewById(R.id.img_qr_code_app);
         txtQrCodeWx = (TextView) findViewById(R.id.txt_qr_code_wx);
         imgQrCodeWx = (ImageView) findViewById(R.id.img_qr_code_wx);
 
         layoutAppTicket.setOnClickListener(this);
-        layoutWxTicket.setOnClickListener(this);
+//        layoutWxTicket.setOnClickListener(this);
     }
 
     private void initViewPager() {
@@ -137,11 +137,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_app_ticket:
-                AppointCodeActivity.start(this, Constant.APP_TICKET);
+                AppointCodeActivity.start(this, null);
                 break;
-            case R.id.layout_wx_ticket:
-                AppointCodeActivity.start(this, Constant.WX_TICKET);
-                break;
+//            case R.id.layout_wx_ticket:
+//                AppointCodeActivity.start(this, Constant.WX_TICKET);
+//                break;
         }
     }
 

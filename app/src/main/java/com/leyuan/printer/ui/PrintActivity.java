@@ -143,14 +143,19 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
             setCommand(PrintUtils.LINE_SPACING_SIXTY);
             if (title != null) {
                 setCommand(PrintUtils.ALIGN_CENTER);
+//                setCommand(PrintUtils.BOLD);
+                setCommand(PrintUtils.DOUBLE_HEIGHT_WIDTH);
                 printText(title + "\n");
                 lineFeed(1);
             }
 
+            setCommand(PrintUtils.RESET);
+            setCommand(PrintUtils.LINE_SPACING_SIXTY);
+            setCommand(PrintUtils.OPEN_CHINA);
+
             if (items != null && !items.isEmpty()) {
                 setCommand(PrintUtils.ALIGN_LEFT);
 //                setCommand(PrintUtils.MARGN_LEFT);
-
                 for (PrintItem item : items) {
                     if (!TextUtils.isEmpty(item.getName())) {
                         printText("     " + item.getName() + ": " + item.getValue() + "\n");
@@ -161,7 +166,7 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
 //            setCommand(PrintUtils.CLOSE_CHINA);
             lineFeed(1);
             printText("--------------------------------------------\n");
-            printText("     签名: \n");
+          //  printText("     签名:1111111111111111111111111111111111111111111111111111111111111111111111 \n");
             lineFeed(5);
             setCommand(PrintUtils.PAPER_CUT);
 
@@ -171,7 +176,7 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
             if (size > 0) {
                 if (buffer[0] == PrintUtils.PRINT_NORMAL) {
                     txtPrintState.setText("打印成功\n请在机器下方取票");
-                    new PrinterPresenter(this).printSuccess(code, lessonType + "");
+                    new PrinterPresenter(this).printSuccess(code, lessonType);
                 } else {
                     txtPrintState.setText("打印失败\n请联系工作人员");
                 }
