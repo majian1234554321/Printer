@@ -92,4 +92,22 @@ public class PrintUtils {
     public static final byte PRINT_NO_P = 0x1e;
     public static final byte[] PAPER_CUT = {0x1B, 0x69};
     public static final byte MACHINE_NORMAL = 0x12;
+
+    //QRCODE
+    public static final byte[] QRCODE_SIZE = {0x1D, 0x01,0X03,0X06};
+
+    public static final byte[] QRCODE_ERROR_LEVEL = {0x1D, 0x01,0X04,0X32};
+    public static final byte[] QRCODE_NUMBER = {0x1D, 0x01,0X01,0X17,0X00};
+    public static final byte[] QRCODE_CONTENT = {0x68, 0x74,0x74,0x70,0x3A,0x5C,0x5C,0x77,0x5C,0x5C
+            ,0x5C,0x5C,0x5C,0x5C,0x5C,0x5C,0x5C,0x5C,0x5C,0x5C,0x5C,0x5C,0x5C};
+    public static final byte[] QRCODE_START_PRINT = {0x1D, 0x01,0X02};
+
+    //BAR_CODE
+    public static final byte[] BARCODE_HEIGHT = {0x1D, 0x68,0x7E};
+
+    public static final byte[] BARCODE_WIDTH = {0x1D, 0x77,0x06};
+    public static final byte[] BARCODE_CONTENT = {0X1D,0X6B,0X48,0X0C
+            ,0X30,0X31,0X32,0X7A,0X34,0X35,0X5A,0X37,0X38,0X39,0X6B,0X50};
+
+
 }

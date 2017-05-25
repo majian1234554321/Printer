@@ -36,10 +36,7 @@ android {
 
     productFlavors {
         wes001 {}
-        w002 {}
-        w003 {}
-        w004 {}
-        w005 {}
+        ad001{}
 
         productFlavors.all { flavor ->
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
