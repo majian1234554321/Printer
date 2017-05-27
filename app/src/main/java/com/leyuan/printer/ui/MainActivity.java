@@ -15,7 +15,9 @@ import com.bumptech.glide.Glide;
 import com.leyuan.printer.R;
 import com.leyuan.printer.adapter.AdapterViewpager;
 import com.leyuan.printer.config.Constant;
+import com.leyuan.printer.utils.DensityUtil;
 import com.leyuan.printer.utils.QRCode;
+import com.leyuan.printer.utils.ToastGlobal;
 import com.leyuan.printer.utils.WindowDisplayUtils;
 
 import java.util.ArrayList;
@@ -30,14 +32,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ImageView imgBg;
     private LinearLayout layoutAppTicket;
     private ImageView imgApp;
-//    private LinearLayout layoutWxTicket;
+    //    private LinearLayout layoutWxTicket;
 //    private ImageView imgWx;
     private TextView txtQrCodeApp;
     private ImageView imgQrCodeApp;
     private TextView txtQrCodeWx;
     private ImageView imgQrCodeWx;
 
-    private int[] imgs = new int[]{R.drawable.page_one, R.drawable.page_two, R.drawable.page_three, R.drawable.page_four};
+    private int[] imgs = new int[]{R.drawable.page_six_month_one, R.drawable.page_six_month_second};
     private ArrayList<View> views = new ArrayList<>();
 
     @Override
@@ -50,6 +52,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } else {
             initViewPager();
         }
+
+        ToastGlobal.showLong("1dp = " + DensityUtil.dp2px(this,1)+"px");
 //        ToastGlobal.showLongCenter("无效的核销码");
 //        App.getInstance().getChannel();
 //        initQRImage();
