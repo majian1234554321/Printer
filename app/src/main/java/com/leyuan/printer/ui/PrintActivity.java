@@ -17,6 +17,7 @@ import com.leyuan.printer.entry.PrintItem;
 import com.leyuan.printer.mvp.presenter.PrinterPresenter;
 import com.leyuan.printer.utils.PrintUtils;
 import com.leyuan.printer.utils.QRCode;
+import com.leyuan.printer.utils.StringLength;
 import com.leyuan.printer.utils.ToastGlobal;
 import com.leyuan.printer.utils.WindowDisplayUtils;
 
@@ -34,6 +35,8 @@ import android_serialport_api.SerialPort;
 public class PrintActivity extends BaseActivity implements View.OnClickListener {
     private static final int MESSAGE_FINISH = 1;
     private static final int READ_PRINT_STATE = 2;
+    private static final int MAX_LENGTH = 48;
+    private static final int MAX_LENGTH_TRIM = 38;
     private TextView txtPrintState;
     private ImageView imgPrinter;
     private ImageView imgQrCodeApp;
@@ -152,21 +155,34 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
             setCommand(PrintUtils.RESET);
             setCommand(PrintUtils.LINE_SPACING_SIXTY);
             setCommand(PrintUtils.OPEN_CHINA);
-
             if (items != null && !items.isEmpty()) {
                 setCommand(PrintUtils.ALIGN_LEFT);
-//                setCommand(PrintUtils.MARGN_LEFT);
                 for (PrintItem item : items) {
                     if (!TextUtils.isEmpty(item.getName())) {
-                        printText("     " + item.getName() + ": " + item.getValue() + "\n");
+                        int nameLength = StringLength.length(item.getName());
+                        int valueLength = StringLength.length(item.getValue());
+//                        ToastGlobal.showLong("nameLength = " + nameLength + " , valueLength = " + valueLength);
+
+                        if (nameLength + valueLength > MAX_LENGTH_TRIM) {
+                            int divider = StringLength.dividerLength(item.getValue(), valueLength - (nameLength + valueLength - MAX_LENGTH_TRIM));
+
+                            String firstValue = item.getValue().substring(0, divider);
+                            String secondValue = item.getValue().substring(divider);
+                            printText("     " + item.getName() + ": " + firstValue + "\n");
+                            char[] c = new char[nameLength + 7];
+                            for (int i = 0; i < c.length; i++) {
+                                c[i] = ' ';
+                            }
+                            printText(new String(c) + secondValue + "\n");
+                        } else {
+                            printText("     " + item.getName() + ": " + item.getValue() + "\n");
+                        }
                     }
                 }
             }
 
-//            setCommand(PrintUtils.CLOSE_CHINA);
             lineFeed(1);
             printText("--------------------------------------------\n");
-          //  printText("     签名:1111111111111111111111111111111111111111111111111111111111111111111111 \n");
             lineFeed(5);
             setCommand(PrintUtils.PAPER_CUT);
 

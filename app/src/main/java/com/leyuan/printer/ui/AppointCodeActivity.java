@@ -391,16 +391,19 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
     public void onGetPrintInfo(PrintResult printResult) {
         layout_checking.setVisibility(View.GONE);
         isCheckintAppointCode = false;
-//        ToastGlobal.showShortConsecutive("onGet  isCheck ：" + isCheckintAppointCode);
-        Logger.i("onGetPrintI  isCheckintAppointCode = " + isCheckintAppointCode);
 
-//        ArrayList<PrintItem> items = new ArrayList<>();
-//        for (int i = 0; i < 7; i++) {
-//            PrintItem item = new PrintItem("title" + i, "value");
-//            items.add(item);
-//        }
+
+//test
+//        Logger.i("onGetPrintI  isCheckintAppointCode = " + isCheckintAppointCode);
 //
-//        PrintActivity.start(this, "爱动取票", items, 1, 1, "8938493242075");
+//        ArrayList<PrintItem> items = new ArrayList<>();
+//            PrintItem item = new PrintItem("活动地点", "上海市徐汇区龙腾大道2555号西岸艺术中心");
+//            items.add(item);
+//
+//            PrintItem item1 = new PrintItem("活动时间", "2017-06-07 15:00-2017-06-17 16:00");
+//            items.add(item1);
+//
+//        PrintActivity.start(this, "爱动取票", items, 1, "1", "8938493242075");
 //        finish();
 
 //release

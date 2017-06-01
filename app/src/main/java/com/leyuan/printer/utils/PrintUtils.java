@@ -66,7 +66,10 @@ public class PrintUtils {
     public static final byte[] LINE_SPACING_SIXTY = {0x1B, 0x33, 0x30};
     public static final byte[] LINE_SPACING_ONE = {0x1B, 0x33, 0x01};
     public static final byte[] LINE_SPACING_ZERO = {0x1B, 0x33, 0x0};
-    public static final byte[] MARGN_LEFT = {0x1D, 0x4C, 0x20};
+    public static final byte[] MARGN_LEFT_THIRTY = {0x1D, 0x4C, 0x30};
+    public static final byte[] MARGN_LEFT_TEN = {0x1D, 0x4C, 0x10};
+
+    public static final byte[] MARGN_LEFT_RIGHT_CZ = {0x1C, 0x53, 0x64,0x64};
 
     public static final byte[] OPEN_CHINA = {0x1C, 0x26};
     public static final byte[] CLOSE_CHINA = {0x1C, 0x2E};
