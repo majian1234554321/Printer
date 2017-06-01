@@ -69,7 +69,23 @@ public class PrintResult {
         public void setItem(ArrayList<PrintItem> item) {
             this.item = item;
         }
+
+        @Override
+        public String toString() {
+            return "LessonInfo{" +
+                    "title='" + title + '\'' +
+                    ", item=" + item +
+                    '}';
+        }
     }
 
-
+    @Override
+    public String toString() {
+        return "PrintResult{" +
+                "lessonType=" + lessonType +
+                ", code='" + code + '\'' +
+                ", isPrint=" + isPrint +
+                ", lessonInfo=" + lessonInfo +
+                '}';
+    }
 }

@@ -15,9 +15,7 @@ import com.bumptech.glide.Glide;
 import com.leyuan.printer.R;
 import com.leyuan.printer.adapter.AdapterViewpager;
 import com.leyuan.printer.config.Constant;
-import com.leyuan.printer.utils.DensityUtil;
 import com.leyuan.printer.utils.QRCode;
-import com.leyuan.printer.utils.ToastGlobal;
 import com.leyuan.printer.utils.WindowDisplayUtils;
 
 import java.util.ArrayList;
@@ -52,11 +50,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } else {
             initViewPager();
         }
-
-        ToastGlobal.showLong("1dp = " + DensityUtil.dp2px(this,1)+"px");
-//        ToastGlobal.showLongCenter("无效的核销码");
-//        App.getInstance().getChannel();
-//        initQRImage();
     }
 
     private void initView() {

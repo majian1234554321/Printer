@@ -60,4 +60,12 @@ public class PrintItem implements Parcelable {
         dest.writeString(name);
         dest.writeString(value);
     }
+
+    @Override
+    public String toString() {
+        return "PrintItem{" +
+                "name='" + name + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }
