@@ -60,6 +60,30 @@ public class PrinterPresenter {
         });
     }
 
+    public void getPrintInfo(String code) {
+        model.getPrintInfo(code, new BaseSubscriber<PrintResult>(context) {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+//                ToastGlobal.showShort(e.getMessage());
+                if (printInfoListenerlistener != null)
+                    printInfoListenerlistener.onGetPrintInfo(null);
+            }
+
+            @Override
+            public void onNext(PrintResult printResult) {
+                if (printInfoListenerlistener != null)
+                    printInfoListenerlistener.onGetPrintInfo(printResult);
+            }
+        });
+    }
+
+
     public void printSuccess(String code, String lessonType) {
         model.printSuccess(code, lessonType, new Subscriber<PrintResult>() {
             @Override

@@ -49,6 +49,7 @@ public class SplashActivity extends BaseActivity {
         handler.sendEmptyMessageDelayed(1, 6000);
         PrinterPresenter presenter = new PrinterPresenter(this);
         presenter.getBanners();
+        presenter.getPrintInfo("23892173892713");
     }
 
     @Override

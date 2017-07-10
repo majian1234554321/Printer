@@ -5,6 +5,8 @@ import com.leyuan.printer.entry.PrintResult;
 
 import java.util.ArrayList;
 
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -29,4 +31,9 @@ public interface PrintService {
 
     @GET("device/{machineId}.json")
     Observable<BaseBean<ArrayList<String>>> getBanners(@Path("machineId") String machineId);
+
+    @FormUrlEncoded
+    @POST("device")
+    Observable<BaseBean<PrintResult>> getPrintInfo(@Field("code") String code,
+                                                   @Field("deviceId") String machineId);
 }

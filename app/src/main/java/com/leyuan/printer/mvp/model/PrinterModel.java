@@ -29,6 +29,12 @@ public class PrinterModel {
                 .subscribe(subscribe);
     }
 
+    public void getPrintInfo(String code, Subscriber<PrintResult> subscribe) {
+        service.getPrintInfo(code, App.getInstance().getChannel())
+                .compose(RxHelper.<PrintResult>transform())
+                .subscribe(subscribe);
+    }
+
     public void printSuccess(String code, String lessonType, Subscriber<PrintResult> subscribe) {
         service.printSuccess(code, App.getInstance().getChannel(), lessonType)
                 .compose(RxHelper.<PrintResult>transform())

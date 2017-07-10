@@ -1,5 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+
+
+
+    <color name="grey">#f2f2f2</color><!--灰色 -->
+    <color name="gray">#808080</color><!--灰色 -->
+
+    <color name="red_origin">#FF5000</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_black">#000000</color>
+    <color name="color_red">#ff0000</color>
+    <color name="color_light_white">#eaebf0</color>
+    <color name="color_txt_gray1">#999999</color>
+    <color name="color_home_tab_bg">#ffffff</color>
+    <color name="color_list_distance">#C8C7CC</color>
+    <color name="orange">#FFA500</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="text_black">#333333</color>
+    <color name="color_image_press">#55F1F1F1</color>
+    <color name="text_gray">#999999</color>
+    <color name="txt_black">#333333</color>
+    <color name="text_color_common">#999999</color>
+    <color name="common_divider_color">#cccccc</color>
+    <color name="light_black">#333333</color>
+    <color name="transpance">#00000000</color>
+    <color name="light_white">#e6e6e6</color>
+    <color name="mine_txt_color">#a5a5a5</color>
+    <color name="blue_select">#1C4987</color>
+    <color name="divider_pop">#eeeeee</color>
+    <color name="black_gray">#999999</color>
+    <color name="base_theme">#e6e6e6</color>
+    <color name="red_point">#FC511F</color>
+    <color name="sixsixsix">#666666</color>
+    <color name="four_d">#4d4d4d</color>
+    <color name="fefefe">#fefefe</color>
+    <color name="c3">#333333</color>
+    <color name="c9">#999999</color>
+    <color name="text_enabled">#FFFFFFFF</color>
+    <color name="text_disabled">#747474</color>
+    <color name="main_red">#FF5000</color>
+    <color name="line_color">#ebebeb</color>
+    <color name="gray_normal">#666667</color>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>

@@ -37,12 +37,16 @@
         <activity
             android:name=".ui.PrintActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.LoginActivity"
+            android:screenOrientation="portrait" />
         <!--<activity-->
-            <!--android:name=".ui.print.Sending01010101Activity"-->
-            <!--android:screenOrientation="portrait" />-->
+        <!--android:name=".ui.print.Sending01010101Activity"-->
+        <!--android:screenOrientation="portrait" />-->
         <!--<activity-->
-            <!--android:name=".ui.print.ConsoleActivity"-->
-            <!--android:screenOrientation="portrait" />-->
+        <!--android:name=".ui.print.ConsoleActivity"-->
+        <!--android:screenOrientation="portrait" />-->
 
         <receiver
             android:name=".receivers.BootBroadcastReceiver"
