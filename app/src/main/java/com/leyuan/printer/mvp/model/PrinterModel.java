@@ -30,7 +30,7 @@ public class PrinterModel {
     }
 
     public void getPrintInfo(String code, Subscriber<PrintResult> subscribe) {
-        service.getPrintInfo(code, App.getInstance().getChannel())
+        service.getPrintInfo(code, App.getInstance().getDevicesId())
                 .compose(RxHelper.<PrintResult>transform())
                 .subscribe(subscribe);
     }

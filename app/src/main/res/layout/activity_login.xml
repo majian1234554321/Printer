@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/login_bg"
     android:gravity="center_horizontal"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="115dp"
+        android:layout_marginTop="175dp"
         android:src="@drawable/login_logo"
 
         />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="145dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
+        android:layout_marginTop="200dp"
         android:background="@drawable/shape_square_black"
         android:gravity="center_vertical"
-        >
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/account"
-            android:textColor="@color/white"
             android:paddingLeft="10dp"
             android:paddingRight="15dp"
-            android:textSize="15dp"
-            />
+            android:text="@string/account"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
         <ImageView
             android:layout_width="0.5dp"
             android:layout_height="25dp"
-            android:src="@color/white"
-            />
+            android:src="@color/white" />
+
         <EditText
             android:id="@+id/edit_input_phone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
             android:background="@color/transparent"
-            android:textSize="13dp"
-            android:textColor="@color/white"
+            android:gravity="center_vertical"
+            android:hint="@string/please_input_accout"
             android:paddingLeft="10dp"
+            android:textColor="@color/white"
             android:textColorHint="@color/black_gray"
-            android:hint="@string/please_input_phone"
-            android:inputType="phone"
+            android:textSize="13dp"
 
             />
-
 
 
     </LinearLayout>
@@ -58,27 +58,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/shape_square_black"
         android:gravity="center_vertical"
-        >
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/password"
-            android:textColor="@color/white"
             android:paddingLeft="10dp"
             android:paddingRight="15dp"
-            android:textSize="15dp"
-            />
+            android:text="@string/password"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
         <ImageView
             android:layout_width="0.5dp"
             android:layout_height="25dp"
-            android:src="@color/white"
-            />
+            android:src="@color/white" />
+
         <EditText
 
             android:id="@+id/edit_input_verify_code"
@@ -87,24 +87,23 @@
             android:layout_weight="1"
             android:background="@color/transparent"
             android:gravity="center_vertical"
-            android:textSize="13dp"
-            android:textColor="@color/white"
+            android:hint="@string/please_input_password"
+            android:inputType="textPassword"
             android:paddingLeft="10dp"
+            android:textColor="@color/white"
             android:textColorHint="@color/black_gray"
-            android:hint="@string/please_input_verify_code"
-            />
+            android:textSize="13dp" />
 
         <Button
             android:id="@+id/bt_get_identify"
             android:layout_width="77dp"
             android:layout_height="27dp"
-            android:background="@color/red_origin"
-            android:textSize="13dp"
-            android:textColor="@color/light_white"
-            android:text="@string/get_identify_code"
             android:layout_marginRight="10dp"
-            android:visibility="gone"
-            />
+            android:background="@color/red_origin"
+            android:text="@string/get_identify_code"
+            android:textColor="@color/light_white"
+            android:textSize="13dp"
+            android:visibility="gone" />
 
 
     </LinearLayout>
@@ -114,21 +113,17 @@
         android:id="@+id/bt_login"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/shape_square_origin"
         android:gravity="center"
-        android:textSize="16dp"
-        android:textColor="@color/white"
+        android:orientation="horizontal"
         android:text="@string/login"
+        android:textColor="@color/white"
+        android:textSize="16dp"
 
         />
-
-
-
-
 
 
 </LinearLayout>

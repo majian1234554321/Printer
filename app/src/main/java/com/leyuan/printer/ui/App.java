@@ -6,9 +6,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
 import com.facebook.stetho.Stetho;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMOptions;
 import com.leyuan.printer.config.Constant;
 import com.leyuan.printer.utils.ForegroundCallbacks;
 import com.leyuan.printer.utils.Logger;
+import com.leyuan.printer.utils.SharePrefUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +48,17 @@ public class App extends Application {
         super.onCreate();
         mInstance = this;
         context = getApplicationContext();
-//        Stetho.initializeWithDefaults(this);
+
+
+        EMOptions options = new EMOptions();
+// 默认添加好友时，是不需要验证的，改成需要验证
+        options.setAcceptInvitationAlways(false);
+        // 如果不需要自动登录，在初始化 SDK 初始化的时候 false 关闭
+//        options.setAutoLogin(false);
+//初始化
+        EMClient.getInstance().init(context, options);
+//在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+        EMClient.getInstance().setDebugMode(true);
 
         ForegroundCallbacks foregroundCallbacks = ForegroundCallbacks.init(this);
         foregroundCallbacks.addListener(foregroundListener);
@@ -124,4 +137,13 @@ public class App extends Application {
         }
     }
 
+
+    private String deviceId;
+
+    public String getDevicesId() {
+        if (deviceId == null) {
+            deviceId = SharePrefUtils.getDeviesId(this);
+        }
+        return deviceId;
+    }
 }

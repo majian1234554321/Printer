@@ -17,6 +17,8 @@ import rx.Subscriber;
  * Created by user on 2017/4/17.
  */
 
+
+
 public class PrinterPresenter {
 
     private Context context;
@@ -37,6 +39,7 @@ public class PrinterPresenter {
         this.bannerViewListener = bannerViewListener;
     }
 
+    @Deprecated
     public void getPrintInfo(String code, String lessonType) {
         model.getPrintInfo(code, lessonType, new BaseSubscriber<PrintResult>(context) {
             @Override

@@ -9,6 +9,10 @@ import android.widget.Toast;
 
 import com.facebook.stetho.common.LogUtil;
 import com.leyuan.printer.R;
+import com.leyuan.printer.chat.manager.EmChatLoginManager;
+import com.leyuan.printer.utils.DialogUtils;
+import com.leyuan.printer.utils.SharePrefUtils;
+import com.leyuan.printer.utils.ToastGlobal;
 
 /**
  * Created by user on 2016/12/19.
@@ -21,11 +25,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private String code;
     private CountDownTimer timeCount;
     private Bundle bundle;
+    private EmChatLoginManager chatLoginManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        findViewById(R.id.bt_login).setOnClickListener(this);
+        chatLoginManager = new EmChatLoginManager(loginListner);
     }
 
     private EditText getEidtTelephone() {
@@ -50,12 +57,32 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
             case R.id.bt_login:
                 if (verifyEdit()) {
-//                    DialogUtils.showDialog(this, "", false);
-//                    presenter.login(mobile, code);
+                    DialogUtils.showDialog(this,"登陆中",false);
+                    chatLoginManager.login(mobile, code);
                 }
                 break;
         }
     }
+
+    private EmChatLoginManager.OnLoginListner loginListner = new EmChatLoginManager.OnLoginListner() {
+        @Override
+        public void onChatLogin(boolean result) {
+            DialogUtils.dismissDialog();
+            if (result) {
+                SharePrefUtils.putDeviesId(LoginActivity.this, mobile);
+                ToastGlobal.showLongCenter("登录成功");
+                AppointCodeActivity.start(LoginActivity.this, null);
+                finish();
+            } else {
+                ToastGlobal.showLongCenter("登录失败 请核对账号密码");
+            }
+        }
+
+        @Override
+        public void onNeedRegister(String userName) {
+
+        }
+    };
 
     private boolean verifyEdit() {
         mobile = getEidtTelephone().getText().toString().trim();
@@ -141,7 +168,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
             mPressedTime = mNowTime;
         } else {//退出程序
-//            exitApp();
+            App.getInstance().exitApp();
         }
     }
 
@@ -161,6 +188,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void onDestroy() {
         super.onDestroy();
 //        DialogUtils.releaseDialog();
+        DialogUtils.releaseDialog();
         if (timeCount != null)
             timeCount.cancel();
         LogUtil.w(TAG, "onDestroy");

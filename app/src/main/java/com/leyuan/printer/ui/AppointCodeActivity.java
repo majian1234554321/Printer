@@ -79,7 +79,7 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
             super.handleMessage(msg);
             switch (msg.what) {
                 case NULL_EVENT:
-                    finish();
+//                    finish();
                     break;
                 case REVEIVED_SCAN_STRING:
                     handler.removeMessages(NULL_EVENT);
@@ -372,7 +372,7 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case R.id.bt_back:
-                finish();
+//                finish();
                 break;
         }
 
@@ -382,7 +382,7 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
         isCheckintAppointCode = true;
         layout_checking.setVisibility(View.VISIBLE);
 //        code = "101434133440";
-        presenter.getPrintInfo(code, ticketType);
+        presenter.getPrintInfo(code);
 //        ToastGlobal.showShortConsecutive("startCheck  isCheck ：" + isCheckintAppointCode);
         Logger.i("startCheck  isCheckintAppointCode = " + isCheckintAppointCode);
     }
@@ -407,17 +407,17 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
 //        finish();
 
 //release
-
-        if (printResult == null || printResult.getLessonInfo() == null) {
-
+        if (printResult == null || printResult.getItem() == null) {
             sendFinishMessage();
             ToastGlobal.showLongCenter("无效的核销码");
         } else {
-            PrintActivity.start(this, printResult.getLessonInfo().getTitle(), printResult.getLessonInfo().getItem()
+            PrintActivity.start(this, printResult.getTitle(), printResult.getItem()
                     , printResult.getIsPrint(), ticketType, printResult.getCode());//printResult.getLessonType()
-            finish();
         }
-
+        if (buffer.length() > 0) {
+            buffer.delete(0, buffer.length());
+        }
+        txtAppointCode.setText(buffer.toString());
     }
 
     @Override

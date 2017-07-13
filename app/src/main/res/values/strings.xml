@@ -1154,6 +1154,8 @@
         <string name="company_name">乐渊网络科技  (上海)  有限公司</string>
         <string name="train_empty">暂无培训</string>
     <string name="account">账号</string>
+    <string name="please_input_accout">请输入账号</string>
+    <string name="please_input_password">请输入密码</string>
 
 
 </resources>

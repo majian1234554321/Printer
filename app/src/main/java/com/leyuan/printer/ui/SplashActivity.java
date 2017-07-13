@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.leyuan.printer.R;
-import com.leyuan.printer.mvp.presenter.PrinterPresenter;
 import com.leyuan.printer.services.PrintJobService;
 import com.leyuan.printer.utils.WindowDisplayUtils;
 
@@ -27,15 +26,13 @@ public class SplashActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
-//            if (gifImageView != null) {
-//                GifDrawable g = (GifDrawable) gifImageView.getDrawable();
-//                if (g != null) {
-//                    g.stop();
-//                }
-//            }
-            finish();
+            if (App.getInstance().getDevicesId() == null) {
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            } else {
+                AppointCodeActivity.start(SplashActivity.this, null);
+            }
 
+            finish();
         }
     };
     private GifImageView gifImageView;
@@ -47,9 +44,11 @@ public class SplashActivity extends BaseActivity {
         gifImageView = (GifImageView) findViewById(R.id.gifImageView);
         startJobScheduler();
         handler.sendEmptyMessageDelayed(1, 6000);
-        PrinterPresenter presenter = new PrinterPresenter(this);
-        presenter.getBanners();
-        presenter.getPrintInfo("23892173892713");
+
+        //请求首页Banner图片 已去掉
+//        PrinterPresenter presenter = new PrinterPresenter(this);
+//        presenter.getBanners();
+//        presenter.getPrintInfo("23892173892713");
     }
 
     @Override

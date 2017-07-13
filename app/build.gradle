@@ -17,8 +17,8 @@ android {
         applicationId "com.leyuan.printer"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.1"
+        versionCode 2
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -35,10 +35,9 @@ android {
     }
 
     productFlavors {
-        ad0011{}
         wes001 {}
         ad001{}
-
+        ad0011{}
         productFlavors.all { flavor ->
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
         }

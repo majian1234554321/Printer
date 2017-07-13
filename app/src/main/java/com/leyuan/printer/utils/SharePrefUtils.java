@@ -71,4 +71,13 @@ public class SharePrefUtils {
     public static void setToken(Context context, String token) {
         putString(context, "token", token);
     }
+
+    public static void putDeviesId(Context context, String deviceId) {
+        putString(context, "deviceId", deviceId);
+    }
+
+    public static String getDeviesId(Context context) {
+        return getString(context, "deviceId", null);
+    }
+
 }

@@ -14,7 +14,8 @@ public class UrlConfig {
             urlHost = "http://app.aidong.me/checkin-1/";
         } else {
 //            urlHost = "http://m.aidong.me/aidong11/";
-            urlHost = "http://m.aidong.me/campaign/";
+//            urlHost = "http://m.aidong.me/campaign/";
+            urlHost = "http://app.aidong.me/checkin-1/";
         }
     }
 
