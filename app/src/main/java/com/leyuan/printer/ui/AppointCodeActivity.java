@@ -388,7 +388,7 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void onGetPrintInfo(PrintResult printResult) {
+    public void onGetPrintInfo(PrintResult printResult, String code) {
         layout_checking.setVisibility(View.GONE);
         isCheckintAppointCode = false;
 
@@ -409,10 +409,10 @@ public class AppointCodeActivity extends BaseActivity implements View.OnClickLis
 //release
         if (printResult == null || printResult.getItem() == null) {
             sendFinishMessage();
-            ToastGlobal.showLongCenter("无效的核销码");
+//            ToastGlobal.showLongCenter("无效的核销码");
         } else {
             PrintActivity.start(this, printResult.getTitle(), printResult.getItem()
-                    , printResult.getIsPrint(), ticketType, printResult.getCode());//printResult.getLessonType()
+                    , printResult.getIsPrint(), ticketType, code);//printResult.getLessonType()
         }
         if (buffer.length() > 0) {
             buffer.delete(0, buffer.length());

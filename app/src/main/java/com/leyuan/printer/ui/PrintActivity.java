@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.leyuan.printer.R;
 import com.leyuan.printer.entry.PrintItem;
+import com.leyuan.printer.mvp.presenter.PrinterPresenter;
 import com.leyuan.printer.utils.PrintUtils;
 import com.leyuan.printer.utils.QRCode;
 import com.leyuan.printer.utils.StringLength;
@@ -191,7 +192,7 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
             if (size > 0) {
                 if (buffer[0] == PrintUtils.PRINT_NORMAL) {
                     txtPrintState.setText("打印成功\n请在机器下方取票");
-//                    new PrinterPresenter(this).printSuccess(code, lessonType);
+                    new PrinterPresenter(this).printSuccessNotify(code);
                 } else {
                     txtPrintState.setText("打印失败\n请联系工作人员");
                 }

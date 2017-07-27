@@ -18,7 +18,6 @@ import rx.Subscriber;
  */
 
 
-
 public class PrinterPresenter {
 
     private Context context;
@@ -39,31 +38,7 @@ public class PrinterPresenter {
         this.bannerViewListener = bannerViewListener;
     }
 
-    @Deprecated
-    public void getPrintInfo(String code, String lessonType) {
-        model.getPrintInfo(code, lessonType, new BaseSubscriber<PrintResult>(context) {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-//                ToastGlobal.showShort(e.getMessage());
-                if (printInfoListenerlistener != null)
-                    printInfoListenerlistener.onGetPrintInfo(null);
-            }
-
-            @Override
-            public void onNext(PrintResult printResult) {
-                if (printInfoListenerlistener != null)
-                    printInfoListenerlistener.onGetPrintInfo(printResult);
-            }
-        });
-    }
-
-    public void getPrintInfo(String code) {
+    public void getPrintInfo(final String code) {
         model.getPrintInfo(code, new BaseSubscriber<PrintResult>(context) {
             @Override
             public void onCompleted() {
@@ -75,18 +50,42 @@ public class PrinterPresenter {
                 super.onError(e);
 //                ToastGlobal.showShort(e.getMessage());
                 if (printInfoListenerlistener != null)
-                    printInfoListenerlistener.onGetPrintInfo(null);
+                    printInfoListenerlistener.onGetPrintInfo(null,code);
             }
 
             @Override
             public void onNext(PrintResult printResult) {
                 if (printInfoListenerlistener != null)
-                    printInfoListenerlistener.onGetPrintInfo(printResult);
+                    printInfoListenerlistener.onGetPrintInfo(printResult,code);
             }
         });
     }
 
+    public void printSuccessNotify(String code) {
+        model.printSuccessNotify(code, new BaseSubscriber<PrintResult>(context) {
+            @Override
+            public void onCompleted() {
 
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                if (printInfoListenerlistener != null) {
+                    printInfoListenerlistener.onPostPrintState(false);
+                }
+            }
+
+            @Override
+            public void onNext(PrintResult result) {
+                if (printInfoListenerlistener != null) {
+                    printInfoListenerlistener.onPostPrintState(true);
+                }
+            }
+        });
+    }
+
+    @Deprecated
     public void printSuccess(String code, String lessonType) {
         model.printSuccess(code, lessonType, new Subscriber<PrintResult>() {
             @Override

@@ -4,15 +4,15 @@ package com.leyuan.printer.entry;
 public class BaseBean<T> {
 
     private int code;
-    private String message;
+    private String msg;
     private T data;
 
     public String getMessage() {
-        return message;
+        return msg;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.msg = message;
     }
 
     public int getStatus() {
@@ -35,7 +35,7 @@ public class BaseBean<T> {
     public String toString() {
         return "BaseBean{" +
                 "status=" + code +
-                ", message='" + message + '\'' +
+                ", message='" + msg + '\'' +
                 ", data=" + data +
                 '}';
     }

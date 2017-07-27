@@ -36,4 +36,11 @@ public interface PrintService {
     @POST("device")
     Observable<BaseBean<PrintResult>> getPrintInfo(@Field("code") String code,
                                                    @Field("deviceId") String machineId);
+    @FormUrlEncoded
+    @POST("device/notify")
+    Observable<BaseBean<PrintResult>> printSuccessNotify(@Field("code") String code,
+                                                   @Field("deviceId") String machineId);
+
+
+
 }

@@ -35,6 +35,16 @@ public class PrinterModel {
                 .subscribe(subscribe);
     }
 
+    public void printSuccessNotify(String code, Subscriber<PrintResult> subscribe) {
+        service.printSuccessNotify(code, App.getInstance().getDevicesId())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(subscriber);
+                .compose(RxHelper.<PrintResult>transform())
+                .subscribe(subscribe);
+    }
+
+    @Deprecated
     public void printSuccess(String code, String lessonType, Subscriber<PrintResult> subscribe) {
         service.printSuccess(code, App.getInstance().getChannel(), lessonType)
                 .compose(RxHelper.<PrintResult>transform())
