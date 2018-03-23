@@ -33,7 +33,7 @@ public interface PrintService {
     Observable<BaseBean<ArrayList<String>>> getBanners(@Path("machineId") String machineId);
 
     @FormUrlEncoded
-    @POST("device")
+    @POST("device/")
     Observable<BaseBean<PrintResult>> getPrintInfo(@Field("code") String code,
                                                    @Field("deviceId") String machineId);
     @FormUrlEncoded

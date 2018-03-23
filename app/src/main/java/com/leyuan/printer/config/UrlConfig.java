@@ -11,7 +11,7 @@ public class UrlConfig {
 
     static {
         if (debug) {
-            urlHost = "http://app.aidong.me/checkin-1/";
+            urlHost = "http://m9.aidong.me/checkin/";
         } else {
             urlHost = "http://app.aidong.me/checkin/";
         }
